@@ -6,8 +6,12 @@ const morgan = require("morgan");
 const { signupHandler } = require('./handlers/signupHandler');
 const { loginHandler } = require('./handlers/loginHandler');
 const { profileUpdateHandler } = require('./handlers/profileUpdateHandler');
+const { createTeamHandler, updateTeamJoinedHandler } = require('./handlers/TeamandUserHandler');
+const { teamHandler } = require("./handlers/teamHandler");
+const { fetchTeamJoinedHandler } = require("./handlers/fetchTeamJoinedHandler");
 
 const PORT = 4000;
+
 express()
 .use(function (req, res, next) {
     res.header(
@@ -29,6 +33,12 @@ express()
 .post("/signup", signupHandler)
 .post("/login", loginHandler)
 .patch("/profile/:userId", profileUpdateHandler)
+.post('/createteam', createTeamHandler)
+.get("/team/:teamName", teamHandler)
+.put('/updateteamjoined/:userId', updateTeamJoinedHandler)
+.get('/fetchteamjoined/:userId', fetchTeamJoinedHandler)
+
+
 
 .listen(PORT, () => console.info(`Listening on port ${PORT}`));
 

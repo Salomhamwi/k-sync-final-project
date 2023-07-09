@@ -6,7 +6,6 @@ import { ContextInfo } from "../components/ContextInfo";
 const Profile = () => {
 const { user } = useContext(ContextInfo);
 const { userId } = useParams();
-const isOwnProfile = user && userId === user._id;
 
 return (
     <ProfileContainer>

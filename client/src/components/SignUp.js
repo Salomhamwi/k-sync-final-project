@@ -30,6 +30,7 @@ const handleSignUp = (e) => {
     password,
     weight: Number(weight),
     age: Number(age),
+    teamJoined: false,
     };
     console.log(formData);
     fetch("/signup", {
@@ -47,7 +48,7 @@ const handleSignUp = (e) => {
             onLogin(firstName);
             setTimeout(() => {
             navigate("/login");
-            }, 3000); // Redirect to login page after 3 seconds
+            }, 2000); // Redirect to login page after 3 seconds
         } else if (response.status === 409) {
             // Email already exists
             setFormError(true);

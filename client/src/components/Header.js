@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../LOGO/logo.png";
@@ -6,6 +6,8 @@ import { ContextInfo } from "../components/ContextInfo";
 
 const Header = () => {
   const { user, setUser } = useContext(ContextInfo);
+  const [team, setTeam] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {

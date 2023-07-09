@@ -33,8 +33,9 @@ try {
     const { age } = user;
     const { lastName } = user;
     const { _id} = user;
+    const {teamJoined} = user;
 
-    res.status(200).json({ message: 'Login successful', firstName, email , weight, age, lastName, _id });
+    res.status(200).json({ message: 'Login successful', firstName, email , weight, age, lastName, _id, teamJoined });
 } catch (error) {
     res.status(500).json({ message: 'Error logging in' });
 } finally {

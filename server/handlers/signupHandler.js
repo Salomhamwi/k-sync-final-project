@@ -31,7 +31,8 @@ try {
     email,
     password: hashedPassword,
     weight,
-    age
+    age,
+    teamJoined: false
     });
 
     res.status(201).json({ message: 'User created successfully' });

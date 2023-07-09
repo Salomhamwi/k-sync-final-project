@@ -9,7 +9,10 @@ import SignUp from './SignUp';
 import Login from './Login';
 import Footer from './Footer';
 import Profile from './Profile';
-import MyProfile from './MyProfile'
+import MyProfile from './MyProfile';
+import MyTeam from './MyTeam';
+import TeamProfile from './TeamProfile';
+import CreateTeam from './CreateTeam';
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/profile/:userId" element={<Profile />} />
             <Route path="/MyProfile/" element={<MyProfile />} />
+            <Route path="/myteam/" element={<MyTeam />} />
+            <Route path="/createteam/" element={<CreateTeam />} />
+            <Route path="/team/:teamName" element={<TeamProfile />} />
           </Routes>
           <Footer />
         </Container>

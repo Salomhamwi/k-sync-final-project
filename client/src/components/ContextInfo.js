@@ -4,7 +4,11 @@ import { useState } from "react"
 // we made all of this so we can still get the information from the backend upon refreshing the page
 export const ContextInfo = createContext(null)
 export const InfoProvider = ({ children }) => {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({
+        firstName: "",
+        lastName: "",
+        teamJoined: false, 
+    });
     
     useEffect(() => {
         // Retrieve user data from localStorage on component mount

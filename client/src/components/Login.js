@@ -35,10 +35,10 @@ const handleLogin = (e) => {
 
           // Assuming the response contains the user's firstName
         response.json().then((data) => {
-            const { firstName, email, weight, age, lastName, _id } = data;
+            const { firstName, email, weight, age, lastName, _id, teamJoined } = data;
 
             // Update the user state in the context with the logged-in user's firstName
-            setUser({ firstName, email, weight, age, lastName, _id  });
+            setUser({ firstName, email, weight, age, lastName, _id, teamJoined  });
 
             // Store the user data in the local storage
             window.localStorage.setItem("user", JSON.stringify(_id));
