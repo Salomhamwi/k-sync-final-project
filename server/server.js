@@ -11,6 +11,7 @@ const { teamHandler } = require("./handlers/teamHandler");
 const { fetchTeamJoinedHandler } = require("./handlers/fetchTeamJoinedHandler");
 const { fetchUserDetails } = require('./handlers/fetchUserDetails');
 const { addMemberHandler } = require('./handlers/addMemberHandler');
+const { removeMemberHandler } = require('./handlers/removeMemberHandler');
 
 const PORT = 4000;
 
@@ -40,7 +41,8 @@ express()
 .put('/updateteamjoined/:userId', updateTeamJoinedHandler)
 .get('/fetchteamjoined/:userId', fetchTeamJoinedHandler)
 .get('/team/members/:userId', fetchUserDetails)
-.post('/addmember', addMemberHandler)
+.post('/addmember/:userId', addMemberHandler)
+.delete('/team/:teamId/member/:memberId', removeMemberHandler)
 
 
 .listen(PORT, () => console.info(`Listening on port ${PORT}`));

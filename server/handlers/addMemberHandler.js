@@ -5,7 +5,9 @@ const { MONGO_URI } = process.env;
 const client = new MongoClient(MONGO_URI);
 
 const addMemberHandler = async (req, res) => {
-  const { teamName, memberId } = req.body;
+  const { teamName, email } = req.body;
+  const { userId } = req.params;
+
   try {
     await client.connect();
     const db = client.db('mydatabase');
@@ -17,18 +19,24 @@ const addMemberHandler = async (req, res) => {
     if (!team) {
       return res.status(404).json({ error: 'Team not found' });
     }
+    
 
-    // Check if the member exists
-    const member = await db.collection('users').findOne({ _id: new ObjectId(memberId) });
+    if (team.teamCaptain.toString() !== userId) {
+      return res.status(403).json({ error: 'Only the team captain can add members' });
+      
+    }
+
+    // Find the user with the given email
+    const member = await usersCollection.findOne({ email, teamJoined: false });
     if (!member) {
-      return res.status(404).json({ error: 'Member not found' });
+      return res.status(404).json({ error: 'Member not found or already part of a team' });
     }
 
     // Update the member's teamJoined and teamName fields
-    await usersCollection.updateOne({ _id: new ObjectId(memberId) }, { $set: { teamJoined: true, teamName } });
+    await usersCollection.updateOne({ _id: member._id }, { $set: { teamJoined: true, teamName } });
 
     // Add the member to the team
-    await teamsCollection.updateOne({ teamName }, { $push: { members: memberId } });
+    await teamsCollection.updateOne({ teamName }, { $push: { members: member._id } });
 
     return res.status(200).json({ message: 'Member added successfully' });
   } catch (error) {

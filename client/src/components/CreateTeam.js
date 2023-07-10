@@ -25,7 +25,7 @@ const CreateTeam = () => {
             address,
             phoneNumber,
             email,
-            teamCaptain: `${user.firstName} ${user.lastName}`,
+            teamCaptain: `${user._id}`,
         }),
         });
 

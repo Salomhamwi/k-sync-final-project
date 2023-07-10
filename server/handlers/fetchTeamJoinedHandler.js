@@ -17,7 +17,7 @@ const fetchTeamJoinedHandler = async (req, res) => {
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
 
     if (user) {
-        res.status(200).json({ teamJoined: user.teamJoined, teamName: user.teamName });
+        res.status(200).json({ teamJoined: user.teamJoined, teamName: user.teamName , teamCaptain: true });
     } else {
         res.status(404).json({ message: 'User not found' });
     }
