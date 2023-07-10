@@ -24,7 +24,6 @@ try {
         }
         }
     );
-    console.log(result);
     res.status(200).json({ message: 'Profile updated successfully' });
 } catch (error) {
     res.status(500).json({ message: 'Error updating profile' });
