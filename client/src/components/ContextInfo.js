@@ -7,6 +7,8 @@ export const InfoProvider = ({ children }) => {
     const [user, setUser] = useState({
         firstName: "",
         lastName: "",
+        dragonBoatRole: "",
+        paddlingSide: "",
         teamJoined: false, 
     });
     

@@ -12,6 +12,9 @@ const { fetchTeamJoinedHandler } = require("./handlers/fetchTeamJoinedHandler");
 const { fetchUserDetails } = require('./handlers/fetchUserDetails');
 const { addMemberHandler } = require('./handlers/addMemberHandler');
 const { removeMemberHandler } = require('./handlers/removeMemberHandler');
+const { deleteTeamHandler } = require('./handlers/deleteTeamHandler');
+const { fetchDragonBoatRoleAndPaddlingSideHandler } = require('./handlers/fetchDragonBoatRoleAndPaddlingSideHandler');
+
 
 const PORT = 4000;
 
@@ -43,6 +46,9 @@ express()
 .get('/team/members/:userId', fetchUserDetails)
 .post('/addmember/:userId', addMemberHandler)
 .delete('/team/:teamId/member/:memberId', removeMemberHandler)
+.delete('/team/:teamId', deleteTeamHandler)
+.get('/profile/:userId', fetchDragonBoatRoleAndPaddlingSideHandler)
+
 
 
 .listen(PORT, () => console.info(`Listening on port ${PORT}`));

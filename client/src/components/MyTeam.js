@@ -16,13 +16,38 @@ const MyTeam = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [showAddMemberPopup, setShowAddMemberPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const handleSuccessMessage = (message) => {
     setSuccessMessage(message);
     setTimeout(() => {
       setSuccessMessage("");
     }, 2000);
+  };
+
+  const handleDeleteConfirmationChange = (event) => {
+    setDeleteConfirmation(event.target.value);
+  };
+
+  const handleDeleteTeam = async () => {
+    if (deleteConfirmation === team.teamName) {
+      try {
+        const response = await fetch(`/team/${team._id}`, {
+          method: "DELETE",
+        });
+
+        if (response.ok) {
+          navigate("/");
+        } else {
+          console.error("Failed to delete team:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error deleting team:", error);
+      }
+    } else {
+      setError("Please enter the correct team name to confirm deletion.");
+    }
   };
 
   const fetchTeamJoined = async () => {
@@ -62,10 +87,7 @@ const MyTeam = () => {
 
   const handleCreateTeam = () => {
     setCreateTeamClicked(true);
-    setTimeout(() => {
-      navigate("/createteam");
-      setCreateTeamClicked(false);
-    }, 2000);
+    navigate("/createteam");
   };
 
   const handleShowMembers = () => {
@@ -148,30 +170,36 @@ const MyTeam = () => {
       console.error("Error adding member:", error);
     }
   };
+
   const removeMember = async (memberId) => {
+    if (memberId === user._id) {
+      // User is the team captain, do not remove themselves
+      return;
+    }
+
     try {
       const response = await fetch(`/team/${team._id}/member/${memberId}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
-  
+
       if (response.ok) {
         // Member removed successfully
         await fetch(`/users/${memberId}`, {
-          method: 'PATCH',
+          method: "PATCH",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ teamJoined: false, teamName: null }),
         });
-  
+
         // Remove the member from the usersData state
         setUsersData((prevData) => prevData.filter((userData) => userData._id !== memberId));
         handleSuccessMessage("User removed successfully from the roster.");
       } else {
-        console.error('Failed to remove member:', response.statusText);
+        console.error("Failed to remove member:", response.statusText);
       }
     } catch (error) {
-      console.error('Error removing member:', error);
+      console.error("Error removing member:", error);
     }
   };
 
@@ -190,48 +218,60 @@ const MyTeam = () => {
                   <strong>Email:</strong> {userData.email}
                 </p>
               </MemberInfo>
-              {isTeamCaptain && (
-                <ButtonContainer>
-                  <RemoveMemberButton onClick={() => removeMember(userData._id)}>Remove</RemoveMemberButton>
-                </ButtonContainer>
-              )}
-            </MemberItem>
-          ))}
-        </MembersList>
-      );
-    } else {
-      return <p>No members found.</p>;
-    }
-  };
+              {isTeamCaptain && userData._id!== user._id && ( // Check if not team captain or not the user themselves
+              <ButtonContainer>
+                <RemoveMemberButton onClick={() => removeMember(userData._id)}>Remove</RemoveMemberButton>
+              </ButtonContainer>
+            )}
+          </MemberItem>
+        ))}
+      </MembersList>
+    );
+  } else {
+    return <p>No members found.</p>;
+  }
+};
 
-  return (
+return (
     <TeamContainer>
       {hasTeam ? (
         team ? (
           <MyTeamProfile>
-            <h2>Team Name: {team.teamName}</h2>
-            <p>Address: {team.address}</p>
-            <p>Phone Number: {team.phoneNumber}</p>
-            <p>Email: {team.email}</p>
-            <p>Members: {team.members.length}</p>
-            <ShowMembersButton onClick={handleShowMembers}>Show Members</ShowMembersButton>
-            {isTeamCaptain && (
-              <React.Fragment>
-                <AddMemberButton onClick={handleOpenAddMemberPopup}>Add a Member</AddMemberButton>
-              </React.Fragment>
+  <div className="team-header">
+    <h2>Team Name: {team.teamName}</h2>
+    {isTeamCaptain && (
+      <DeleteTeamButton onClick={() => setShowDeletePopup(true)}>
+        Delete Team
+      </DeleteTeamButton>
+    )}
+  </div>
+  <p>Address: {team.address}</p>
+  <p>Phone Number: {team.phoneNumber}</p>
+  <p>Email: {team.email}</p>
+  <p>Members: {team.members.length}</p>
+  <AddMemberButton onClick={handleOpenAddMemberPopup}>
+        Add a Member
+      </AddMemberButton>
+  {isTeamCaptain && (
+    <React.Fragment>
+      <ShowMembersButton onClick={handleShowMembers}>
+    Show Members
+  </ShowMembersButton>
+    </React.Fragment>
             )}
             {showMembers && (
-              <MembersWindow>
-                <MembersHeader>
-                  <h3>Team Members</h3>
-                  <CloseButton onClick={handleCloseMembers}>Close</CloseButton>
-                </MembersHeader>
-                {successMessage && (
-  <SuccessNotification>{successMessage}</SuccessNotification>
-)}
-                {renderMembers()}
-              </MembersWindow>
-            )}
+          <MembersWindowContainer>
+            <MembersWindow>
+            <MembersHeader>
+          <h3>Team Members</h3>
+          <CloseButton onClick={handleCloseMembers}>Close</CloseButton>
+        </MembersHeader>
+        {successMessage && <SuccessNotification>{successMessage}</SuccessNotification>}
+        {renderMembers()}
+          </MembersWindow>
+          </MembersWindowContainer>
+  )}
+
           </MyTeamProfile>
         ) : (
           <LoadingContainer>
@@ -250,7 +290,7 @@ const MyTeam = () => {
           )}
         </NoTeamContainer>
       )}
-  
+
       {showAddMemberPopup && isTeamCaptain && (
         <AddMemberPopup>
           <AddMemberForm>
@@ -265,25 +305,58 @@ const MyTeam = () => {
           </AddMemberForm>
         </AddMemberPopup>
       )}
+
+      {showDeletePopup && isTeamCaptain && (
+        <DeletePopup>
+          <DeleteForm>
+            <h3>Are you sure you want to delete the team?</h3>
+            <p>
+              To confirm deletion, please enter the team name:
+            </p>
+            <Input
+              type="text"
+              value={deleteConfirmation}
+              onChange={handleDeleteConfirmationChange}
+            />
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+            <DeleteButton onClick={handleDeleteTeam}>Delete</DeleteButton>
+            <CancelButton onClick={() => setShowDeletePopup(false)}>Cancel</CancelButton>
+          </DeleteForm>
+        </DeletePopup>
+      )}
     </TeamContainer>
   );
-}
+};
 
     const TeamContainer = styled.div`
     
 `;
 
 const MyTeamProfile = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  line-height: 40px;
+  align-items: flex-start;
+
+  > .team-header {
     display: flex;
-    flex-direction: column;
-    background-color: #f1f1f1;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    line-height: 40px;
-    
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  > .team-header h2 {
+    margin: 0;
+  }
 `;
+
+
 
 const LoadingContainer = styled.div`
     display: flex;
@@ -293,43 +366,13 @@ const LoadingContainer = styled.div`
 `;
 
 const NoTeamContainer = styled.div`
-    background-color: #f1f1f1;
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #f1f1f1;
-`;
-
-const BoatImageContainer = styled.div`
-    animation: ${({ createTeamClicked }) =>
-    createTeamClicked ? 'slideOutTop 1.3s ease-in-out' : 'slideInBottom 1.3s ease-in-out'};
-    animation-fill-mode: forwards;
-
-    @keyframes slideInBottom {
-    0% {
-        transform: translateY(100%);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    }
-
-    @keyframes slideOutTop {
-    0% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    }
+  
+  border-radius: 8px;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f1f1f1;
 `;
 
 const MemberNumber = styled.span`
@@ -345,7 +388,35 @@ const MemberInfo = styled.div`
 `;
 
 const BoatImageElement = styled.img`
-    width: 300px;
+  animation: ${({ createTeamClicked }) =>
+    createTeamClicked ? 'flipAndSlideOut 1.3s ease-in-out' : 'slideInBottom 1.3s ease-in-out'};
+  animation-fill-mode: forwards;
+
+  @keyframes slideInBottom {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes flipAndSlideOut {
+    0% {
+      transform: translateY(0) rotateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(0) rotateY(180deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100%) rotateY(180deg);
+      opacity: 0;
+    }
+  }
 `;
 
 const TeamText = styled.p`
@@ -367,22 +438,22 @@ const CreateTeamButton = styled.button`
 
 
 
-const ShowMembersButton = styled.button`
-  background-color: #2c3e50;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 12px;
-  margin-top: 10px;
-  cursor: pointer;
+
+
+const MembersWindowContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%
 `;
 
 const MembersWindow = styled.div`
+
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
   padding: 20px;
+  width: 100%;
 `;
 
 const MembersHeader = styled.div`
@@ -421,14 +492,24 @@ const AddMemberButton = styled.button`
   cursor: pointer;
 `;
 
+const ShowMembersButton = styled.button`
+background-color: #2c3e50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 22px;
+  margin-top: 10px;
+  cursor: pointer;
+`;
+
 const RemoveMemberButton = styled.button`
   background-color: #e74c3c;
   color: #fff;
   border: none;
   border-radius: 4px;
   padding: 8px 15px;
-  margin-top: 10px;
   cursor: pointer;
+  margin-left: auto;
 `;
 
 const AddMemberPopup = styled.div`
@@ -456,7 +537,6 @@ const CloseButton = styled.button`
   border: none;
   border-radius: 4px;
   padding: 8px 15px;
-  margin-left: 10px; 
   cursor: pointer;
 `;
 
@@ -488,6 +568,61 @@ const SuccessNotification = styled.div`
   border-radius: 4px;
   margin-top: 10px;
   animation: ${fadeAnimation} 1s ease-in;
+`;
+
+const DeleteTeamButton = styled.button`
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+`;
+
+const DeletePopup = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const DeleteForm = styled.div`
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+`;
+
+const DeleteButton = styled.button`
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-top: 10px;
+  cursor: pointer;
+`;
+
+const CancelButton = styled.button`
+  background-color: #bbb;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-top: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  margin-top: 10px;
 `;
 
 

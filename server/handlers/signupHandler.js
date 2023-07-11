@@ -7,7 +7,7 @@ const { MONGO_URI } = process.env;
 const client = new MongoClient(MONGO_URI);
 
 const signupHandler = async (req, res) => {
-const { firstName, lastName, email, password, weight, age } = req.body;
+const { firstName, lastName, email, password, weight, age, dragonBoatRole, paddlingSide } = req.body;
 
 try {
     await client.connect();
@@ -32,6 +32,8 @@ try {
     password: hashedPassword,
     weight,
     age,
+    dragonBoatRole,
+    paddlingSide,
     teamJoined: false
     });
 

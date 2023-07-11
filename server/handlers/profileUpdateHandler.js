@@ -8,7 +8,7 @@ const client = new MongoClient(MONGO_URI);
 
 const profileUpdateHandler = async (req, res) => {
 const {userId} = req.params;
-const {weight, age} = req.body;
+const {weight, age, dragonBoatRole, paddlingSide} = req.body;
 
 try {
     await client.connect();
@@ -21,6 +21,8 @@ try {
         $set: {
             weight: weight,
             age: age,
+            dragonBoatRole: dragonBoatRole,
+            paddlingSide: paddlingSide,
         }
         }
     );
