@@ -3,11 +3,11 @@ const { MongoClient, ObjectId } = require('mongodb');
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 
-const client = new MongoClient(MONGO_URI);
+
 
 const fetchDragonBoatRoleAndPaddlingSideHandler = async (req, res) => {
 const { userId } = req.params;
-
+const client = new MongoClient(MONGO_URI);
   try {
     await client.connect();
     const db = client.db('mydatabase');

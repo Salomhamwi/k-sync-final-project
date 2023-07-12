@@ -4,11 +4,11 @@ const bcrypt = require('bcrypt');
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 
-const client = new MongoClient(MONGO_URI);
+
 
 const loginHandler = async (req, res) => {
 const { email, password } = req.body;
-
+const client = new MongoClient(MONGO_URI);
 try {
     await client.connect();
     const db = client.db('mydatabase');

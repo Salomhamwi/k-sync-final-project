@@ -14,6 +14,8 @@ const { addMemberHandler } = require('./handlers/addMemberHandler');
 const { removeMemberHandler } = require('./handlers/removeMemberHandler');
 const { deleteTeamHandler } = require('./handlers/deleteTeamHandler');
 const { fetchDragonBoatRoleAndPaddlingSideHandler } = require('./handlers/fetchDragonBoatRoleAndPaddlingSideHandler');
+const { updateRosterHandler } = require('./handlers/updateRosterHandler');
+const { getRosterHandler } = require('./handlers/getRosterHandler');
 
 
 const PORT = 4000;
@@ -48,6 +50,8 @@ express()
 .delete('/team/:teamId/member/:memberId', removeMemberHandler)
 .delete('/team/:teamId', deleteTeamHandler)
 .get('/profile/:userId', fetchDragonBoatRoleAndPaddlingSideHandler)
+.post('/update-roster', updateRosterHandler)
+.get('/roster/:teamName', getRosterHandler)
 
 
 

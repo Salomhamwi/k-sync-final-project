@@ -8,6 +8,7 @@ const MyTeam = () => {
   const { user, setUser } = useContext(ContextInfo);
   const [team, setTeam] = useState(null);
   const [createTeamClicked, setCreateTeamClicked] = useState(false);
+  const [createRosterClicked, setCreateRosterClicked] = useState(false);
   const [showMembers, setShowMembers] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -82,12 +83,14 @@ const MyTeam = () => {
   const hasTeam = user.teamJoined;
   const isTeamCaptain = team && team.teamCaptain === user._id;
 
-  console.log(user.teamJoined);
-  console.log(user.teamName);
-
   const handleCreateTeam = () => {
     setCreateTeamClicked(true);
     navigate("/createteam");
+  };
+
+  const handleCreateRoster = () => {
+    setCreateRosterClicked(true);
+    navigate("/createroster");
   };
 
   const handleShowMembers = () => {
@@ -217,6 +220,9 @@ const MyTeam = () => {
                 <p>
                   <strong>Email:</strong> {userData.email}
                 </p>
+                <p>
+                  <strong>Role:</strong> {userData.dragonBoatRole} {userData.paddlingSide}
+                </p>
               </MemberInfo>
               {isTeamCaptain && userData._id!== user._id && ( // Check if not team captain or not the user themselves
               <ButtonContainer>
@@ -226,9 +232,10 @@ const MyTeam = () => {
           </MemberItem>
         ))}
       </MembersList>
+      
     );
   } else {
-    return <p>No members found.</p>;
+    return <p>Loading Members...</p>;
   }
 };
 
@@ -249,14 +256,17 @@ return (
   <p>Phone Number: {team.phoneNumber}</p>
   <p>Email: {team.email}</p>
   <p>Members: {team.members.length}</p>
-  <AddMemberButton onClick={handleOpenAddMemberPopup}>
-        Add a Member
-      </AddMemberButton>
-  {isTeamCaptain && (
-    <React.Fragment>
-      <ShowMembersButton onClick={handleShowMembers}>
+  <ShowMembersButton onClick={handleShowMembers}>
     Show Members
   </ShowMembersButton>
+  {isTeamCaptain && (
+    <React.Fragment>
+      <AddMemberButton onClick={handleOpenAddMemberPopup}>
+        Add a Member
+      </AddMemberButton>
+      <CreateRosterButton  onClick={handleCreateRoster} >
+        Create a Team Roster
+      </CreateRosterButton>
     </React.Fragment>
             )}
             {showMembers && (
@@ -437,13 +447,10 @@ const CreateTeamButton = styled.button`
 `;
 
 
-
-
-
 const MembersWindowContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  width: 100%
+  width: 100%;
 `;
 
 const MembersWindow = styled.div`
@@ -488,6 +495,16 @@ const AddMemberButton = styled.button`
   border: none;
   border-radius: 4px;
   padding: 8px 25px;
+  margin-top: 10px;
+  cursor: pointer;
+`;
+
+const CreateRosterButton = styled.button`
+  background-color: #2c3e50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 10px;
   margin-top: 10px;
   cursor: pointer;
 `;

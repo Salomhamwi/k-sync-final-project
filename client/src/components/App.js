@@ -13,6 +13,8 @@ import MyProfile from './MyProfile';
 import MyTeam from './MyTeam';
 import TeamProfile from './TeamProfile';
 import CreateTeam from './CreateTeam';
+import CreateRoster from './CreateRoster';
+import Posts from './Posts';
 
 function App() {
   return (
@@ -21,7 +23,7 @@ function App() {
         <Container>
           <Header />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route exact path="/" component={<Home />} /> 
             <Route path="/about" element={<AboutPage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
@@ -30,6 +32,8 @@ function App() {
             <Route path="/myteam/" element={<MyTeam />} />
             <Route path="/createteam/" element={<CreateTeam />} />
             <Route path="/team/:teamName" element={<TeamProfile />} />
+            <Route path="/createroster" element={<CreateRoster />} />
+            <Route path="/posts" element={<Posts />} />
           </Routes>
           <Footer />
         </Container>

@@ -2,13 +2,13 @@ const { MongoClient, ObjectId } = require('mongodb');
 require('dotenv').config();
 
 const { MONGO_URI } = process.env;
-const client = new MongoClient(MONGO_URI);
+
 
 const updateUserRoleHandler = async (req, res) => {
   const { userId } = req.params;
   const { dragonBoatRole } = req.body;
-  console.log(userId);
-  console.log(dragonBoatRole);
+  const client = new MongoClient(MONGO_URI);
+  
   try {
     // Connect to the MongoDB database
     await client.connect();

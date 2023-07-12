@@ -48,7 +48,7 @@ const Header = () => {
           </>
         ) : (
           <>
-          <NavLink exact to="/" activeClassName="active">
+          <NavLink to="/" activeClassName="activeclassname">
           Home
         </NavLink>
         <NavLink to="/about" activeClassName="active">

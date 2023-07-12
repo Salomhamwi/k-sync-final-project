@@ -2,12 +2,12 @@ const { MongoClient, ObjectId } = require('mongodb');
 require('dotenv').config();
 
 const { MONGO_URI } = process.env;
-const client = new MongoClient(MONGO_URI);
+
 
 const addMemberHandler = async (req, res) => {
   const { teamName, email } = req.body;
   const { userId } = req.params;
-
+  const client = new MongoClient(MONGO_URI);
   try {
     await client.connect();
     const db = client.db('mydatabase');

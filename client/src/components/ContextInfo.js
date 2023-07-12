@@ -9,6 +9,7 @@ export const InfoProvider = ({ children }) => {
         lastName: "",
         dragonBoatRole: "",
         paddlingSide: "",
+        teamName: "",
         teamJoined: false, 
     });
     

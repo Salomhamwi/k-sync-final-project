@@ -2,13 +2,13 @@ const { MongoClient, ObjectId } = require('mongodb');
 require('dotenv').config();
 
 const { MONGO_URI } = process.env;
-const client = new MongoClient(MONGO_URI);
+
 
 const removeMemberHandler = async (req, res) => {
   const teamId = req.params.teamId;
   const {memberId } = req.params
-  console.log(teamId);
-  console.log(memberId);
+  const client = new MongoClient(MONGO_URI);
+  
   try {
     // Connect to the MongoDB database
     await client.connect();
