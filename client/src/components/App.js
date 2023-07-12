@@ -23,7 +23,7 @@ function App() {
         <Container>
           <Header />
           <Routes>
-            <Route exact path="/" component={<Home />} /> 
+            <Route path="/" element={<Home />} /> 
             <Route path="/about" element={<AboutPage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />

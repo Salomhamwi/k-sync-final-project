@@ -148,7 +148,7 @@ const SignUp = ({ onLogin }) => {
         {formError && <ErrorText>Email already in use!</ErrorText>}
         {userCreated && (
           <SuccessText>
-            User created successfully. Redirecting to the login page...
+            User created successfully
           </SuccessText>
         )}
         <Button type="submit">Sign Up</Button>
