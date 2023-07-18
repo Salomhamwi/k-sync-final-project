@@ -158,7 +158,7 @@ const SignUp = ({ onLogin }) => {
         <ErrorText>Email already in use!</ErrorText>
         )}
         {formError && emailError && (
-        <ErrorText>{emailError}</ErrorText>
+        <ErrorText>Please sign up with a Hotmail or Gmail account.</ErrorText>
         )}
         {userCreated && (
         <SuccessText>
