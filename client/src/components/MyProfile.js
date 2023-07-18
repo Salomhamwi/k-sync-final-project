@@ -53,7 +53,7 @@ const MyProfile = () => {
 
   const handleUpdateProfile = async () => {
     try {
-      const response = await fetch(`/profile/${user._id}`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/profile/${user._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

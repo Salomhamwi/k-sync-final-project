@@ -139,7 +139,7 @@ const CreateRoster = () => {
       // Filter out empty seats and get their member IDs
       const filledSeatIds = seats.filter(Boolean);
   
-      const response = await fetch('/update-roster', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/update-roster`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

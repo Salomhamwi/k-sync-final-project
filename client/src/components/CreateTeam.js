@@ -15,7 +15,7 @@ const CreateTeam = () => {
     e.preventDefault();
 
     try {
-        const response = await fetch("/createteam", {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/createteam`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -31,7 +31,7 @@ const CreateTeam = () => {
 
         if (response.ok) {
           // Update user's teamJoined field to true and set teamName
-        await fetch(`/updateteamjoined/${user._id}`, {
+        await fetch(`${process.env.REACT_APP_BACKEND_URL}/updateteamjoined/${user._id}`, {
             method: "PUT",
             body: JSON.stringify({
             teamJoined: true,

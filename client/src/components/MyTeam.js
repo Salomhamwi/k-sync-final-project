@@ -34,7 +34,7 @@ const MyTeam = () => {
   const handleDeleteTeam = async () => {
     if (deleteConfirmation === team.teamName) {
       try {
-        const response = await fetch(`/team/${team._id}`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/team/${team._id}`, {
           method: "DELETE",
         });
 
@@ -149,7 +149,7 @@ const MyTeam = () => {
 
   const addMember = async () => {
     try {
-      const response = await fetch(`/addmember/${user._id}`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}addmember/${user._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -181,13 +181,13 @@ const MyTeam = () => {
     }
 
     try {
-      const response = await fetch(`/team/${team._id}/member/${memberId}`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/team/${team._id}/member/${memberId}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
         // Member removed successfully
-        await fetch(`/users/${memberId}`, {
+        await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${memberId}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",

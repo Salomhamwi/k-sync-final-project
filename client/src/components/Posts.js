@@ -33,7 +33,7 @@ const Posts = () => {
       try {
         if (!team) return; // Skip fetching if team data is not available
 
-        const response = await fetch(`/roster/${team.teamName}`);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/roster/${team.teamName}`);
         if (response.ok) {
           const data = await response.json();
           setRoster(data.roster);

@@ -12,7 +12,7 @@ const TeamProfile = () => {
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const response = await fetch(`/team/${teamName}`);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/team/${teamName}`);
         if (response.ok) {
           const teamData = await response.json();
           setTeam(teamData);
