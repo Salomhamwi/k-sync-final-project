@@ -19,7 +19,7 @@ const CreateRoster = () => {
 
   const fetchTeamJoined = async () => {
     try {
-      const response = await fetch(`/fetchteamjoined/${user._id}`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/fetchteamjoined/${user._id}`);
       if (response.ok) {
         const data = await response.json();
         setUser((prevUser) => ({
@@ -29,7 +29,7 @@ const CreateRoster = () => {
         }));
 
         if (data.teamJoined && data.teamName) {
-          const teamResponse = await fetch(`/team/${data.teamName}`);
+          const teamResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/team/${data.teamName}`);
           if (teamResponse.ok) {
             const teamData = await teamResponse.json();
             setTeam(teamData);
@@ -56,7 +56,7 @@ const CreateRoster = () => {
         const allUserDetails = [];
         if (team && team.members) {
           for (const userId of team.members) {
-            const response = await fetch(`/team/members/${userId}`);
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/team/members/${userId}`);
             if (response.ok) {
               const userData = await response.json();
               allUserDetails.push(userData);

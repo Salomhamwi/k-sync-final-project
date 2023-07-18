@@ -13,7 +13,7 @@ const Posts = () => {
       try {
         if (!user) return; // Skip fetching if user is not logged in
 
-        const response = await fetch(`/team/${user.teamName}`);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/team/${user.teamName}`);
         if (response.ok) {
           const teamData = await response.json();
           setTeam(teamData);

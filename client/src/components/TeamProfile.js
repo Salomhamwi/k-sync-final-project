@@ -32,7 +32,7 @@ const TeamProfile = () => {
     const fetchUserDetails = async () => {
       const promises = members.map(async (member) => {
         try {
-          const response = await fetch(`/users/${member}`);
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${member}`);
           if (response.ok) {
             const userData = await response.json();
             return userData;

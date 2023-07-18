@@ -45,7 +45,7 @@ const SignUp = ({ onLogin }) => {
       teamJoined: false,
     };
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}signup`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

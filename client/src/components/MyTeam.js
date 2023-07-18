@@ -53,13 +53,13 @@ const MyTeam = () => {
 
   const fetchTeamJoined = async () => {
     try {
-      const response = await fetch(`/fetchteamjoined/${user._id}`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/fetchteamjoined/${user._id}`);
       if (response.ok) {
         const data = await response.json();
         setUser((prevUser) => ({ ...prevUser, teamJoined: data.teamJoined, teamName: data.teamName }));
 
         if (data.teamJoined && user.teamName) {
-          const teamResponse = await fetch(`/team/${user.teamName}`);
+          const teamResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/team/${user.teamName}`);
           if (teamResponse.ok) {
             const teamData = await teamResponse.json();
             setTeam(teamData);
@@ -113,7 +113,7 @@ const MyTeam = () => {
   useEffect(() => {
     const fetchUserDetails = async (userId) => {
       try {
-        const response = await fetch(`/team/members/${userId}`);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/team/members/${userId}`);
         if (response.ok) {
           const userData = await response.json();
           return userData;
@@ -149,7 +149,7 @@ const MyTeam = () => {
 
   const addMember = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}addmember/${user._id}`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/addmember/${user._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

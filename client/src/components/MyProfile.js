@@ -29,7 +29,7 @@ const MyProfile = () => {
 
   const fetchUserDetails = async () => {
     try {
-      const response = await fetch(`/profile/${user._id}`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/profile/${user._id}`);
       if (response.ok) {
         const data = await response.json();
         const newUser = { ...user, ...data };
