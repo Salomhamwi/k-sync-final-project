@@ -20,16 +20,16 @@ const { getRosterHandler } = require('./handlers/getRosterHandler');
 
 const PORT = 4000;
 
+
 express()
-.use(function (req, res, next) {
-    res.header(
-    "Access-Control-Allow-Methods",
-    "OPTIONS, HEAD, GET, PUT, POST, DELETE"
-    );
-    res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-    );
+.use((req, res, next) => {
+    const allowedOrigins = ['https://k-sync-final-project-salomhamwi.vercel.app/', 'http://localhost:3000'];
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Methods', '*');
     next();
 })
 .use(morgan("tiny"))
