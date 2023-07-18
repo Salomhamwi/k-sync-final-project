@@ -20,7 +20,7 @@ const handleLogin = (e) => {
     password,
     };
 
-    fetch("/login", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/login`, {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
