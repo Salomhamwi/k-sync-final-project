@@ -163,7 +163,7 @@ const SignUp = ({ onLogin }) => {
         {formError && emailError && (
         <ErrorText>Please sign up with a Hotmail or Gmail account.</ErrorText>
         )}
-        {userCreated && (
+        {userCreated && !emailError && !formError (
         <SuccessText>
         User created successfully
         </SuccessText>
