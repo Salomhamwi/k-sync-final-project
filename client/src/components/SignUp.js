@@ -40,10 +40,7 @@ const SignUp = ({ onLogin }) => {
       setFormError(true);
       setEmailError("Please sign up with a Hotmail or Gmail account.");
       return;
-    } else {
-      setFormError(false);
-      return;
-    }
+    } 
 
     fetch(`${process.env.REACT_APP_BACKEND_URL}/signup`, {
       method: "POST",
