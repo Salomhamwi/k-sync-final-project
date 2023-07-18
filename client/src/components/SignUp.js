@@ -35,7 +35,7 @@ const SignUp = ({ onLogin }) => {
       setFormError(true);
       return;
     }
-    
+
     if (!hotmailPattern.test(email) && !gmailPattern.test(email)) {
       setFormError(true);
       setEmailError("Please sign up with a Hotmail or Gmail account.");
@@ -154,11 +154,16 @@ const SignUp = ({ onLogin }) => {
           <option value="Steerer">Steerer</option>
           <option value="Drummer">Drummer</option>
         </Select>
-        {formError && <ErrorText>Email already in use!</ErrorText>}
+        {formError && !emailError && (
+        <ErrorText>Email already in use!</ErrorText>
+        )}
+        {formError && emailError && (
+        <ErrorText>{emailError}</ErrorText>
+        )}
         {userCreated && (
-          <SuccessText>
-            User created successfully
-          </SuccessText>
+        <SuccessText>
+        User created successfully
+        </SuccessText>
         )}
         <Button type="submit">Sign Up</Button>
         <LinkText to="/login">Already have an account? Log In</LinkText>
