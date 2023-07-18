@@ -23,7 +23,7 @@ const PORT = 4000;
 
 express()
 .use((req, res, next) => {
-    const allowedOrigins = ['https://k-sync-final-project-salomhamwi.vercel.app/', 'http://localhost:3000'];
+    const allowedOrigins = ['https://k-sync-final-project-salomhamwi.vercel.app', 'http://localhost:3000'];
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
