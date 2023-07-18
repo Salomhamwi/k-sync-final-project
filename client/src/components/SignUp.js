@@ -40,6 +40,9 @@ const SignUp = ({ onLogin }) => {
       setFormError(true);
       setEmailError("Please sign up with a Hotmail or Gmail account.");
       return;
+    } else {
+      setFormError(false);
+      return;
     }
 
     const formData = {
