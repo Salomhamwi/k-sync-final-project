@@ -19,6 +19,9 @@ const SignUp = ({ onLogin }) => {
   const handleSignUp = (e) => {
     e.preventDefault();
 
+    const hotmailPattern = /^[a-zA-Z0-9._%+-]+@hotmail\.[a-zA-Z]{2,}$/;
+    const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.[a-zA-Z]{2,}$/;
+
     if (
       !firstName ||
       !lastName ||
@@ -30,6 +33,12 @@ const SignUp = ({ onLogin }) => {
       !paddlingSide
     ) {
       setFormError(true);
+      return;
+    }
+    
+    if (!hotmailPattern.test(email) && !gmailPattern.test(email)) {
+      setFormError(true);
+      setEmailError("Please sign up with a Hotmail or Gmail account.");
       return;
     }
 
