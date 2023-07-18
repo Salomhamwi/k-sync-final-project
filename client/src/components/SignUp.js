@@ -18,10 +18,7 @@ const SignUp = ({ onLogin }) => {
 
   const handleSignUp = (e) => {
     e.preventDefault();
-  
-    const hotmailPattern = /^[a-zA-Z0-9._%+-]+@hotmail\.[a-zA-Z]{2,}$/;
-    const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.[a-zA-Z]{2,}$/;
-  
+
     if (
       !firstName ||
       !lastName ||
@@ -35,12 +32,17 @@ const SignUp = ({ onLogin }) => {
       setFormError(true);
       return;
     }
-  
-    if (!hotmailPattern.test(email) && !gmailPattern.test(email)) {
-      setFormError(true);
-      setEmailError("Please sign up with a Hotmail or Gmail account.");
-      return;
-    } 
+    const formData = {
+      firstName,
+      lastName,
+      email,
+      password,
+      weight: Number(weight),
+      age: Number(age),
+      dragonBoatRole,
+      paddlingSide,
+      teamJoined: false,
+    };
 
     fetch(`${process.env.REACT_APP_BACKEND_URL}/signup`, {
       method: "POST",
@@ -142,17 +144,12 @@ const SignUp = ({ onLogin }) => {
           <option value="Steerer">Steerer</option>
           <option value="Drummer">Drummer</option>
         </Select>
-        {formError && !emailError && (
-    <ErrorText>Email already in use!</ErrorText>
-  )}
-  {formError && emailError && (
-    <ErrorText>{emailError}</ErrorText>
-  )}
-  {userCreated && (
-    <SuccessText>
-      User created successfully
-    </SuccessText>
-  )}
+        {formError && <ErrorText>Email already in use!</ErrorText>}
+        {userCreated && (
+          <SuccessText>
+            User created successfully
+          </SuccessText>
+        )}
         <Button type="submit">Sign Up</Button>
         <LinkText to="/login">Already have an account? Log In</LinkText>
       </SignUpForm>
